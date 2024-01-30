@@ -32,8 +32,13 @@ const ProjectType = new GraphQLObjectType({
         status:{type:GraphQLString},
         client:{
             type:ClientType,
-            resolve(parent,args){
-                return clients.find(client=> client.id === parent.clientId)
+            async resolve(parent,args){
+                try{
+                    const findClient = await Client.findById(parent.clientId)
+                    return findClient
+                }catch(err){
+                    console.log(err)
+                }
             }
         }
     })
